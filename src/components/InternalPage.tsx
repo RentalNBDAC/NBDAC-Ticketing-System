@@ -334,7 +334,7 @@ export default function InternalPage({
         <div className="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[80vh] overflow-hidden border">
           <div className="p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Catatan Pentadbir (Opsional)
+              Catatan Pentadbir (Pilihan)
             </h3>
             <div className="mb-4">
               <input 
@@ -653,7 +653,7 @@ export default function InternalPage({
                             {showNoteDialog[submission.id] && (
                               <div className="w-64 p-3 bg-white border border-gray-200 rounded-lg shadow-lg absolute z-10">
                                 <Label className="text-xs font-medium text-gray-700 mb-2 block">
-                                  Catatan Pentadbir (Opsional)
+                                  Catatan Pentadbir (Pilihan)
                                 </Label>
                                 <Textarea
                                   placeholder="Masukkan catatan untuk status selesai..."
@@ -772,7 +772,7 @@ export default function InternalPage({
                           {showNoteDialog[submission.id] && (
                             <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
                               <Label className="text-xs font-medium text-gray-700 mb-2 block">
-                                Catatan Pentadbir (Opsional)
+                                Catatan Pentadbir (Pilihan)
                               </Label>
                               <Textarea
                                 placeholder="Masukkan catatan untuk status selesai..."
