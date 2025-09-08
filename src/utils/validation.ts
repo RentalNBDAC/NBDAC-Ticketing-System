@@ -125,7 +125,7 @@ export const validateField = (name: string, value: string): string[] => {
       if (!websiteValidPattern.test(sanitizedValue)) {
         errors.push('Mengandungi aksara yang tidak dibenarkan dalam laman web');
       } else if (!isValidWebsiteUrl(sanitizedValue)) {
-        errors.push('Format laman web tidak sah. Mesti mengikut format:\nnombor. NamaSitus: https://www.contoh.com\n\nContoh yang betul:\n1. iProperty: https://www.iproperty.com.my\n2. PropertyGuru: https://www.propertyguru.com.my');
+        errors.push('Format laman web tidak sah. Mesti mengikut format:\nnombor. NamaLamanWeb: https://www.contoh.com\n\nContoh yang betul:\n1. iProperty: https://www.iproperty.com.my\n2. PropertyGuru: https://www.propertyguru.com.my');
       }
       break;
       

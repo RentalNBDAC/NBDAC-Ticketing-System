@@ -265,7 +265,7 @@ export default function PermohonanBaruPage({ onBack, onSubmit, loading = false }
                 <AlertDescription className="text-blue-800">
                   <strong>Format yang diperlukan:</strong> Setiap laman web mesti mengikut format ini:<br />
                   <code className="bg-blue-100 px-1 py-0.5 rounded text-sm">
-                    nombor. NamaSitus: https://www.contoh.com
+                    nombor. NamaLamanWeb: https://www.contoh.com
                   </code>
                   <br />
                   <span className="text-sm mt-1 block">
@@ -300,9 +300,9 @@ export default function PermohonanBaruPage({ onBack, onSubmit, loading = false }
                 </p>
                 <ul className="text-xs text-muted-foreground space-y-0.5 ml-4">
                   <li>• Mesti bermula dengan nombor diikuti titik (1. , 2. , dst.)</li>
-                  <li>• Nama situs diikuti dengan titik bertindih (:)</li>
+                  <li>• Nama laman web diikuti dengan titik bertindih (:)</li>
                   <li>• URL lengkap bermula dengan https:// atau http://</li>
-                  <li>• Setiap situs dalam baris yang berasingan</li>
+                  <li>• Setiap laman web dalam baris yang berasingan</li>
                 </ul>
               </div>
             </div>
