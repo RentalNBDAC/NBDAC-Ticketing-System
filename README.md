@@ -467,6 +467,6 @@ For technical support or questions:
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: September 2025
-**Maintainer**: NBDAC Rental/PI Team
-**License**: Internal Use Only
+**Last Updated**: September 2025  
+**Maintainer**: NBDAC Rental/PI Team  
+**License**: Internal Use Only  
