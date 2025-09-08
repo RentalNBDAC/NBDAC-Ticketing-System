@@ -78,11 +78,11 @@ export class EmailJSService {
               fromEmail: configResult.config.fromEmail || 'noreply@nbdac.gov.my'
             };
             
-            console.log('✅ Full EmailJS configuration loaded from server');
-            console.log(`   Service ID: ${this.config.serviceId}`);
-            console.log(`   Template ID: ${this.config.templateId}`);
-            console.log(`   From Name: ${this.config.fromName}`);
-            console.log(`   From Email: ${this.config.fromEmail}`);
+            // console.log('✅ Full EmailJS configuration loaded from server');
+            // console.log(`   Service ID: ${this.config.serviceId}`);
+            // console.log(`   Template ID: ${this.config.templateId}`);
+            // console.log(`   From Name: ${this.config.fromName}`);
+            // console.log(`   From Email: ${this.config.fromEmail}`);
             
             this.initialize();
             return;
