@@ -158,7 +158,7 @@ export default function HomePage({ onNavigate, isAdminAuthenticated }: HomePageP
       </div>
 
       {/* Setup Section - Only show if not admin authenticated */}
-      {!isAdminAuthenticated && (
+      {/* {!isAdminAuthenticated && (
         <div className="max-w-5xl mx-auto">
           <Card className="border-orange-200 bg-orange-50">
             <CardHeader>
@@ -195,7 +195,7 @@ export default function HomePage({ onNavigate, isAdminAuthenticated }: HomePageP
             </CardContent>
           </Card>
         </div>
-      )}
+      )} */}
 
       {/* Footer Info */}
       <div className="text-center text-gray-500 text-sm">
