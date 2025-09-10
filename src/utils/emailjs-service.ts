@@ -255,7 +255,7 @@ export class EmailJSService {
             // System info
             submission_id: submission.id,
             submission_time: new Date().toLocaleString('ms-MY'),
-            system_name: 'Sistem Permohonan Projek NBDAC',
+            system_name: 'Sistem Permohonan Projek Web Scraping NBDAC',
           };
 
           console.log(`📤 Sending to: ${adminEmail}`);
@@ -379,7 +379,7 @@ export class EmailJSService {
         status: 'Test',
         submission_id: testSubmission.id,
         submission_time: new Date().toLocaleString('ms-MY'),
-        system_name: 'Sistem Permohonan Projek NBDAC - Test Mode',
+        system_name: 'Sistem Permohonan Projek Web Scraping NBDAC - Test Mode',
       };
 
       const response = await emailjs.send(

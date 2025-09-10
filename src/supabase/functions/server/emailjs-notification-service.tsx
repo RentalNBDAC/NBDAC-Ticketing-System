@@ -117,7 +117,7 @@ export const sendAdminNotificationViaEmailJS = async (
       // System info
       submission_id: submission.id || 'unknown',
       submission_time: new Date().toLocaleString('ms-MY'),
-      system_name: 'Sistem Permohonan Projek NBDAC',
+      system_name: 'Sistem Permohonan Projek Web Scraping NBDAC',
       
       // Note for server-side logging
       admin_emails_list: adminEmails.join(', '),

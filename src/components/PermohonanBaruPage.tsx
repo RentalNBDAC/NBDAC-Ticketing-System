@@ -279,9 +279,9 @@ export default function PermohonanBaruPage({ onBack, onSubmit, loading = false }
                 value={formData.websiteUrl}
                 onChange={(e) => handleInputChange('websiteUrl', e.target.value)}
                 onBlur={() => handleFieldBlur('websiteUrl')}
-                placeholder="1. iProperty: https://www.iproperty.com.my
+                placeholder={`1. iProperty: https://www.iproperty.com.my
 2. PropertyGuru: https://www.propertyguru.com.my
-3. DurianProperty: https://www.durianproperty.com.my"
+3. DurianProperty: https://www.durianproperty.com.my`}
                 disabled={submitting || loading}
                 rows={6}
                 className={`font-mono text-sm ${hasFieldError('websiteUrl') ? 'border-destructive' : ''}`}

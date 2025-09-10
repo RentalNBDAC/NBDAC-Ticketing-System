@@ -101,7 +101,7 @@ Purpose: Debugging "recipients address is empty" error
 
 If you receive this email, the template configuration is working correctly.
 
-System: Sistem Permohonan Projek NBDAC`,
+System: Sistem Permohonan Projek Web Scraping NBDAC`,
 
     // Sender fields
     from_name: 'Sistem NBDAC Debug',
@@ -118,7 +118,7 @@ System: Sistem Permohonan Projek NBDAC`,
     // System info
     test_id: `debug-${Date.now()}`,
     test_time: new Date().toISOString(),
-    system_name: 'Sistem Permohonan Projek NBDAC - Debug Mode'
+    system_name: 'Sistem Permohonan Projek Web Scraping NBDAC - Debug Mode'
   };
 };
 

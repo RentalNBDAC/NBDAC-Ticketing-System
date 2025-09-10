@@ -332,7 +332,7 @@ export const advancedEmailSetup = async (config: {
     smtpPort: config.smtpPort,
     smtpUsername: config.smtpUsername,
     smtpPassword: config.smtpPassword,
-    senderName: 'Sistem Permohonan Projek NBDAC',
+    senderName: 'Sistem Permohonan Projek Web Scraping NBDAC',
     senderEmail: config.senderEmail
   };
 

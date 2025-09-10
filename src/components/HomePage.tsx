@@ -15,7 +15,7 @@ export default function HomePage({ onNavigate, isAdminAuthenticated }: HomePageP
       <div className="text-center max-w-3xl mx-auto space-y-6">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-900">
-            Sistem Permohonan Projek NBDAC
+            Sistem Permohonan Projek Web Scraping NBDAC
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed">
             Platform digital untuk menghantar dan mengurus permohonan projek di National Big Data Analytics Centre. 

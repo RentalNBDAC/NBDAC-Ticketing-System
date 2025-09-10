@@ -354,7 +354,7 @@ export const sendEnhancedAdminNotification = async (
       // System info
       submission_id: submissionId,
       submission_time: new Date().toLocaleString('ms-MY'),
-      system_name: 'Sistem Permohonan Projek NBDAC',
+      system_name: 'Sistem Permohonan Projek Web Scraping NBDAC',
       notification_time: new Date().toLocaleString('ms-MY'),
       emailjs_configured: isEmailJSConfigured,
       

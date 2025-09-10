@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { ArrowLeft, FileText, Plus, Search } from 'lucide-react';
+import EmailLink from './EmailLink';
 
 interface GuestPageProps {
   onNavigate: (page: string) => void;
@@ -111,7 +112,13 @@ export default function GuestPage({ onNavigate, onBack }: GuestPageProps) {
               <p>• Pastikan semua maklumat yang diperlukan dilengkapkan dengan tepat</p>
               <p>• Permohonan akan disemak dalam tempoh 3-5 hari bekerja</p>
               <p>• Anda akan menerima notifikasi email mengenai status permohonan</p>
-              <p>• Untuk pertanyaan lanjut, hubungi pentadbir sistem di <span className="font-medium">admin@nbdac.gov.my</span></p>
+              <p>• Untuk pertanyaan lanjut, hubungi pentadbir sistem di <EmailLink
+                to="noradilah.adnan@dosm.gov.my"
+                subject="Pertanyaan mengenai Sistem Permohonan Projek Web Scraping NBDAC"
+                body={`Salam sejahtera,\n\nSaya ingin membuat pertanyaan mengenai Sistem Permohonan Projek Web Scraping NBDAC.\n\n[Sila tulis pertanyaan anda di sini]\n\nTerima kasih.\n\n---\nDihantar melalui Portal Tetamu Sistem Permohonan Projek Web Scraping NBDAC`}
+              >
+                noradilah.adnan@dosm.gov.my
+              </EmailLink></p>
             </div>
           </div>
         </div>

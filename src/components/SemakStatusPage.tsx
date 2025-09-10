@@ -66,7 +66,7 @@ export default function SemakStatusPage({ onBack, onSearchByEmail, loading = fal
       case 'Menunggu':
         return <Badge variant="secondary" className="bg-yellow-50 text-yellow-700 border-yellow-200"><Clock className="h-3 w-3 mr-1" />Menunggu</Badge>;
       case 'Sedang Diprocess':
-        return <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200"><RefreshCw className="h-3 w-3 mr-1" />Sedang Diprocess</Badge>;
+        return <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200"><RefreshCw className="h-3 w-3 mr-1" />Sedang Diproses</Badge>;
       case 'Selesai':
         return <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200"><CheckCircle className="h-3 w-3 mr-1" />Selesai</Badge>;
       default:
@@ -155,13 +155,13 @@ export default function SemakStatusPage({ onBack, onSearchByEmail, loading = fal
               <p className="text-sm text-gray-900 whitespace-pre-wrap">{getFieldValue(submission, 'catatan')}</p>
             </div>
             
-            {/* CRITICAL: Admin Note Section - Show for guest users when admin note exists */}
-            {(submission.adminNote || submission.admin_note) && (
+            {/* Admin Note Section - Show if admin note exists for Selesai status */}
+            {(submission.adminNote || submission.admin_note) && submission.status === 'Selesai' && (
               <div className="border-t pt-4">
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <MessageSquare className="h-4 w-4 text-green-600 flex-shrink-0" />
-                    <label className="text-sm font-medium text-green-800">Catatan Pentadbir</label>
+                    <label className="text-sm font-medium text-green-800">Maklum Balas Pentadbir</label>
                   </div>
                   <div className="bg-white/50 rounded-md p-3 border border-green-100">
                     <p className="text-sm text-green-900 leading-relaxed break-words overflow-wrap-anywhere whitespace-pre-wrap">
@@ -170,6 +170,28 @@ export default function SemakStatusPage({ onBack, onSearchByEmail, loading = fal
                   </div>
                   {(submission.noteAddedAt || submission.note_added_at) && (
                     <p className="text-xs text-green-600 mt-3 italic">
+                      Ditambah pada: {formatDateTimeSafe(submission.noteAddedAt || submission.note_added_at)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Admin Note Section for Sedang Diprocess - Show with blue styling */}
+            {(submission.adminNote || submission.admin_note) && submission.status === 'Sedang Diprocess' && (
+              <div className="border-t pt-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <MessageSquare className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                    <label className="text-sm font-medium text-blue-800">Maklum Balas Pentadbir (Sedang Diproses)</label>
+                  </div>
+                  <div className="bg-white/50 rounded-md p-3 border border-blue-100">
+                    <p className="text-sm text-blue-900 leading-relaxed break-words overflow-wrap-anywhere whitespace-pre-wrap">
+                      {submission.adminNote || submission.admin_note}
+                    </p>
+                  </div>
+                  {(submission.noteAddedAt || submission.note_added_at) && (
+                    <p className="text-xs text-blue-600 mt-3 italic">
                       Ditambah pada: {formatDateTimeSafe(submission.noteAddedAt || submission.note_added_at)}
                     </p>
                   )}
@@ -318,11 +340,17 @@ export default function SemakStatusPage({ onBack, onSearchByEmail, loading = fal
                                 <span className="truncate">
                                   {submission.namaProjek || 'Tidak dinyatakan'}
                                 </span>
-                                {/* CRITICAL: Show admin note indicator in guest table */}
-                                {(submission.adminNote || submission.admin_note) && (
+                                {/* Show admin note indicator in guest table */}
+                                {(submission.adminNote || submission.admin_note) && submission.status === 'Selesai' && (
                                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs flex-shrink-0">
                                     <MessageSquare className="h-3 w-3 mr-1" />
-                                    Catatan
+                                    Maklum Balas
+                                  </Badge>
+                                )}
+                                {(submission.adminNote || submission.admin_note) && submission.status === 'Sedang Diprocess' && (
+                                  <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200 text-xs flex-shrink-0">
+                                    <MessageSquare className="h-3 w-3 mr-1" />
+                                    M. Proses
                                   </Badge>
                                 )}
                               </div>
@@ -371,11 +399,17 @@ export default function SemakStatusPage({ onBack, onSearchByEmail, loading = fal
                                 <h4 className="font-medium text-sm text-gray-900 truncate">
                                   {submission.namaProjek || 'Tidak dinyatakan'}
                                 </h4>
-                                {/* CRITICAL: Show admin note indicator in mobile cards */}
-                                {(submission.adminNote || submission.admin_note) && (
+                                {/* Show admin note indicator in mobile cards */}
+                                {(submission.adminNote || submission.admin_note) && submission.status === 'Selesai' && (
                                   <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs flex-shrink-0">
                                     <MessageSquare className="h-3 w-3 mr-1" />
-                                    Catatan
+                                    Maklum Balas
+                                  </Badge>
+                                )}
+                                {(submission.adminNote || submission.admin_note) && submission.status === 'Sedang Diprocess' && (
+                                  <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200 text-xs flex-shrink-0">
+                                    <MessageSquare className="h-3 w-3 mr-1" />
+                                    M. Proses
                                   </Badge>
                                 )}
                               </div>

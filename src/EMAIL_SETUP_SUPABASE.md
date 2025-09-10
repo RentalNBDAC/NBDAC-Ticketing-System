@@ -50,7 +50,7 @@ Sender Email: notifications@yourorganization.gov.my
 2. **SMTP Port**: Usually 587 for TLS or 25 for standard
 3. **SMTP Username**: Email account for sending notifications
 4. **SMTP Password**: Password for the email account
-5. **Sender Name**: `Sistem Permohonan Projek NBDAC`
+5. **Sender Name**: `Sistem Permohonan Projek Web Scraping NBDAC`
 6. **Sender Email**: Your organization's notification email
 7. Click **"Save"**
 

@@ -1,8 +1,8 @@
-# Sistem Permohonan Projek NBDAC
+# Sistem Permohonan Projek Web Scraping NBDAC
 
 ## Project Overview
 
-**Sistem Permohonan Projek NBDAC** is a comprehensive project booking and request management system built for the NBDAC (National Big Data Analytics Centre). The system features separate portals for internal staff and external guests, with full backend integration for data persistence, authentication, and email notifications.
+**Sistem Permohonan Projek Web Scraping NBDAC** is a comprehensive project booking and request management system built for the NBDAC (National Big Data Analytics Centre). The system features separate portals for internal staff and external guests, with full backend integration for data persistence, authentication, and email notifications.
 
 ### Key Features
 

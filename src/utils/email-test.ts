@@ -49,7 +49,7 @@ export const testEmailSetup = async (config: EmailTestConfig): Promise<boolean> 
           
           <div style="text-align: center; margin: 30px 0; padding: 20px; border-top: 1px solid #e0e0e0;">
             <p style="color: #666; font-size: 14px; margin: 0;">
-              <strong>Sistem Permohonan Projek NBDAC</strong><br>
+              <strong>Sistem Permohonan Projek Web Scraping NBDAC</strong><br>
               Email Notification Test - ${new Date().toLocaleDateString('ms-MY')}
             </p>
           </div>

@@ -20,7 +20,7 @@ export const buildEmailHeader = (projectName: string): string => {
       <tr>
         <td bgcolor="#f8fafc" style="background-color:#f8fafc;padding:25px;text-align:center;">
           <h1 style="margin:0 0 15px 0;font-size:24px;font-weight:600;color:#000000;text-align:center;font-family:Arial,sans-serif;">
-            Sistem Permohonan Projek NBDAC
+            Sistem Permohonan Projek Web Scraping NBDAC
           </h1>
           <div style="border-top:2px solid #2563eb;margin:15px auto;width:60px;height:2px;"></div>
           <h2 style="margin:0 0 10px 0;font-size:20px;font-weight:500;color:#000000;text-align:center;font-family:Arial,sans-serif;">
@@ -306,7 +306,7 @@ export const buildEmailFooter = (): string => {
     <tr>
       <td bgcolor="#f8fafc" style="padding:20px;text-align:center;background-color:#f8fafc;">
         <p style="margin:0 0 8px 0;font-size:16px;font-weight:600;color:#1e293b;text-align:center;font-family:Arial,sans-serif;">
-          Sistem Permohonan Projek NBDAC
+          Sistem Permohonan Projek Web Scraping NBDAC
         </p>
         <p style="margin:0;font-size:12px;color:#64748b;text-align:center;font-family:Arial,sans-serif;">
           Automated message via EmailJS

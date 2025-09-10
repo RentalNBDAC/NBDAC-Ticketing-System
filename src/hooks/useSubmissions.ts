@@ -27,11 +27,20 @@ export const useSubmissions = () => {
   const loadSubmissions = useCallback(async () => {
     setLoading(true);
     try {
+      console.log('📋 Loading submissions...');
+      
+      // Add timeout to the fetch request
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      
       const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-764b8bb4/submissions`, {
         headers: {
           'Authorization': `Bearer ${publicAnonKey}`,
         },
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -173,34 +182,45 @@ export const useSubmissions = () => {
   }, []);
 
   const updateSubmissionStatus = useCallback(async (id: string, status: string, adminNote?: string) => {
-    try {
-      console.log(`📝 Updating submission ${id} status to: ${status}`);
-      if (adminNote) {
-        console.log(`📄 Adding admin note for completion`);
-      }
-      
-      const requestBody: any = { status };
-      
-      // Add admin note if status is "Selesai" and note is provided
-      if (status === 'Selesai' && adminNote && adminNote.trim()) {
-        requestBody.adminNote = adminNote.trim();
-      }
-      
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-764b8bb4/submissions/${id}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${publicAnonKey}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`📝 Updating submission ${id} status to: ${status} (attempt ${attempt}/${maxRetries})`);
+        if (adminNote) {
+          console.log(`📄 Adding admin note: ${adminNote.substring(0, 50)}${adminNote.length > 50 ? '...' : ''}`);
+        }
+        
+        const requestBody: any = { status };
+        
+        // Add admin note if status is "Selesai" or "Sedang Diprocess" and note is provided
+        if ((status === 'Selesai' || status === 'Sedang Diprocess') && adminNote && adminNote.trim()) {
+          requestBody.adminNote = adminNote.trim();
+        }
+        
+        // Add timeout to the fetch request
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        
+        const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-764b8bb4/submissions/${id}/status`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${publicAnonKey}`,
+          },
+          body: JSON.stringify(requestBody),
+          signal: controller.signal,
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
+        clearTimeout(timeoutId);
 
-      const data = await response.json();
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
       
       if (!data.success) {
         throw new Error(data.error || 'Gagal mengemaskini status');
@@ -223,16 +243,31 @@ export const useSubmissions = () => {
         )
       );
 
-      toast.success(data.message || 'Status berjaya dikemaskini');
-      
-      return { success: true };
+        toast.success(data.message || 'Status berjaya dikemaskini');
+        
+        return { success: true };
 
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('❌ Error updating status:', errorMessage);
-      toast.error('Gagal mengemaskini status');
-      return { success: false, error: errorMessage };
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error('Unknown error');
+        console.error(`❌ Error updating status (attempt ${attempt}/${maxRetries}):`, lastError.message);
+        
+        // If this is a timeout error and we have retries left, wait and retry
+        if (attempt < maxRetries && (lastError.name === 'AbortError' || lastError.message.includes('Failed to fetch'))) {
+          console.log(`⏳ Retrying in ${attempt * 2} seconds...`);
+          await new Promise(resolve => setTimeout(resolve, attempt * 2000)); // Exponential backoff
+          continue;
+        }
+        
+        // If this is the last attempt or a non-retryable error, break out of the loop
+        break;
+      }
     }
+    
+    // If we get here, all retries failed
+    const errorMessage = lastError?.message || 'Unknown error';
+    console.error('❌ Failed to update status after all retries:', errorMessage);
+    toast.error('Gagal mengemaskini status. Sila cuba lagi atau periksa sambungan internet.');
+    return { success: false, error: errorMessage };
   }, []);
 
   const getSubmissionsByEmail = useCallback(async (email: string) => {

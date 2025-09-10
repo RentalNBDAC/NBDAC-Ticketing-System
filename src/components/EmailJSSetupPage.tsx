@@ -10,7 +10,7 @@ import { Separator } from './ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { CheckCircle, XCircle, Mail, Settings, TestTube, ArrowLeft, ExternalLink, Zap, Eye, RefreshCw } from 'lucide-react';
 import { emailjsService, testEmailConfiguration, type EmailJSConfig } from '../utils/emailjs-service';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface EmailJSSetupPageProps {
   onBack?: () => void;

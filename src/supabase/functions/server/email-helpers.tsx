@@ -129,7 +129,7 @@ MAKLUMAT SISTEM:
 ID Permohonan: ${submissionId}
 Masa Permohonan: ${new Date().toLocaleString('ms-MY')}
 
-Sistem Permohonan Projek NBDAC
+Sistem Permohonan Projek Web Scraping NBDAC
 Automated message via EmailJS
   `.trim();
 };

@@ -108,7 +108,7 @@ Maklumat Permohonan:
 Tindakan Diperlukan:
 Sila log masuk ke sistem untuk menyemak dan menguruskan permohonan ini.
 
-Sistem Permohonan Projek NBDAC
+Sistem Permohonan Projek Web Scraping NBDAC
 Mesej automatik - tidak perlu balas
 ```
 

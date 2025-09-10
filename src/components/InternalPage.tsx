@@ -71,6 +71,7 @@ export default function InternalPage({
   const [adminNotes, setAdminNotes] = useState<Record<string, string>>({});
   const [showNoteDialog, setShowNoteDialog] = useState<Record<string, boolean>>({});
   const [noteDialogId, setNoteDialogId] = useState<string | null>(null);
+  const [noteDialogStatus, setNoteDialogStatus] = useState<string | null>(null);
 
 
   // Safe submissions array
@@ -150,8 +151,8 @@ export default function InternalPage({
 
   const handleStatusUpdate = async (id: string, newStatus: string) => {
     try {
-      // If changing to "Selesai", check if admin note should be added
-      if (newStatus === 'Selesai') {
+      // If changing to "Selesai" or "Sedang Diprocess", check if admin note should be added
+      if (newStatus === 'Selesai' || newStatus === 'Sedang Diprocess') {
         const adminNote = adminNotes[id]?.trim();
         if (adminNote) {
           await onUpdateStatus(id, newStatus, adminNote);
@@ -159,17 +160,20 @@ export default function InternalPage({
           setAdminNotes(prev => ({ ...prev, [id]: '' }));
           setShowNoteDialog(prev => ({ ...prev, [id]: false }));
           setNoteDialogId(null);
+          setNoteDialogStatus(null);
         } else {
           await onUpdateStatus(id, newStatus);
           setShowNoteDialog(prev => ({ ...prev, [id]: false }));
           setNoteDialogId(null);
+          setNoteDialogStatus(null);
         }
       } else {
         await onUpdateStatus(id, newStatus);
-        // Clear any pending notes if status is changed to non-Selesai
+        // Clear any pending notes if status is changed to other statuses
         setAdminNotes(prev => ({ ...prev, [id]: '' }));
         setShowNoteDialog(prev => ({ ...prev, [id]: false }));
         setNoteDialogId(null);
+        setNoteDialogStatus(null);
       }
     } catch (error) {
       console.error('Status update error:', error);
@@ -181,9 +185,10 @@ export default function InternalPage({
     setAdminNotes(prev => ({ ...prev, [id]: note }));
   };
 
-  const toggleNoteDialog = (id: string) => {
+  const toggleNoteDialog = (id: string, status?: string) => {
     setShowNoteDialog(prev => ({ ...prev, [id]: !prev[id] }));
     setNoteDialogId(prev => prev === id ? null : id);
+    setNoteDialogStatus(prev => prev === id ? null : (status || null));
   };
 
 
@@ -287,12 +292,12 @@ export default function InternalPage({
             </div>
             
             {/* Admin Note Section - Show if admin note exists */}
-            {submission.adminNote && (
+            {submission.adminNote && submission.status === 'Selesai' && (
               <div className="border-t pt-4">
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <MessageSquare className="h-4 w-4 text-green-600 flex-shrink-0" />
-                    <label className="text-sm font-medium text-green-800">Catatan Pentadbir</label>
+                    <label className="text-sm font-medium text-green-800">Maklum Balas Pentadbir</label>
                   </div>
                   <div className="bg-white/50 rounded-md p-3 border border-green-100">
                     <p className="text-sm text-green-900 leading-relaxed break-words overflow-wrap-anywhere whitespace-pre-wrap">
@@ -301,6 +306,28 @@ export default function InternalPage({
                   </div>
                   {submission.noteAddedAt && (
                     <p className="text-xs text-green-600 mt-3 italic">
+                      Ditambah pada: {formatDateTimeSafe(submission.noteAddedAt)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Admin Note Section for Sedang Diprocess - Show with blue styling */}
+            {submission.adminNote && submission.status === 'Sedang Diprocess' && (
+              <div className="border-t pt-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <MessageSquare className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                    <label className="text-sm font-medium text-blue-800">Maklum Balas Pentadbir (Sedang Diproses)</label>
+                  </div>
+                  <div className="bg-white/50 rounded-md p-3 border border-blue-100">
+                    <p className="text-sm text-blue-900 leading-relaxed break-words overflow-wrap-anywhere whitespace-pre-wrap">
+                      {submission.adminNote}
+                    </p>
+                  </div>
+                  {submission.noteAddedAt && (
+                    <p className="text-xs text-blue-600 mt-3 italic">
                       Ditambah pada: {formatDateTimeSafe(submission.noteAddedAt)}
                     </p>
                   )}
@@ -325,22 +352,28 @@ export default function InternalPage({
     </Dialog>
   );
 
-  // Admin Note Dialog Component - FIXED with strong LTR enforcement and raw input element
+  // Admin Note Dialog Component - UPDATED to handle both Selesai and Sedang Diproses
   const AdminNoteDialog = ({ submissionId }: { submissionId: string }) => {
     if (!showNoteDialog[submissionId]) return null;
+    
+    const currentStatus = noteDialogStatus || 'Selesai';
+    const statusLabel = currentStatus === 'Selesai' ? 'Selesai' : 'Sedang Diproses';
+    const placeholderText = currentStatus === 'Selesai' 
+      ? 'Masukkan maklum balas untuk status selesai...' 
+      : 'Masukkan maklum balas untuk status sedang diproses...';
     
     return (
       <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[80vh] overflow-hidden border">
           <div className="p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Catatan Pentadbir (Pilihan)
+              Maklum Balas Pentadbir (Opsional)
             </h3>
             <div className="mb-4">
               <input 
                 type="text"
                 key={`admin-note-input-${submissionId}`}
-                placeholder="Masukkan catatan untuk status selesai..."
+                placeholder={placeholderText}
                 value={adminNotes[submissionId] || ''}
                 onChange={(e) => handleNoteChange(submissionId, e.target.value)}
                 style={{
@@ -374,10 +407,10 @@ export default function InternalPage({
                 Batal
               </Button>
               <Button
-                onClick={() => handleStatusUpdate(submissionId, 'Selesai')}
+                onClick={() => handleStatusUpdate(submissionId, currentStatus)}
                 className="text-sm"
               >
-                Selesai
+                {statusLabel}
               </Button>
             </div>
           </div>
@@ -602,10 +635,16 @@ export default function InternalPage({
                             <div className="truncate max-w-48" title={submission.namaProjek || 'Tidak dinyatakan'}>
                               {submission.namaProjek || 'Tidak dinyatakan'}
                             </div>
-                            {submission.adminNote && (
+                            {submission.adminNote && submission.status === 'Selesai' && (
                               <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs flex-shrink-0">
                                 <MessageSquare className="h-3 w-3 mr-1" />
-                                Catatan
+                                Maklum Balas
+                              </Badge>
+                            )}
+                            {submission.adminNote && submission.status === 'Sedang Diprocess' && (
+                              <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200 text-xs flex-shrink-0">
+                                <MessageSquare className="h-3 w-3 mr-1" />
+                                M. Proses
                               </Badge>
                             )}
                           </div>
@@ -620,26 +659,25 @@ export default function InternalPage({
                             {submission.email || 'Tidak dinyatakan'}
                           </div>
                         </TableCell>
-                        <TableCell className="text-xs capitalize">
+                        <TableCell className="text-xs">
                           <div className="truncate max-w-24" title={getFieldValue(submission, 'kekerapanPengumpulan')}>
                             {getFieldValue(submission, 'kekerapanPengumpulan')}
                           </div>
                         </TableCell>
                         <TableCell>{getStatusBadge(submission.status)}</TableCell>
                         <TableCell>
-                          <div className="space-y-2">
+                          <div className="flex items-center gap-1">
                             <Select
                               value={submission.status}
                               onValueChange={(newStatus) => {
-                                if (newStatus === 'Selesai') {
-                                  toggleNoteDialog(submission.id);
+                                if (newStatus === 'Selesai' || newStatus === 'Sedang Diprocess') {
+                                  toggleNoteDialog(submission.id, newStatus);
                                 } else {
                                   handleStatusUpdate(submission.id, newStatus);
                                 }
                               }}
-                              disabled={loading}
                             >
-                              <SelectTrigger className="w-24 h-8 text-xs">
+                              <SelectTrigger className="h-8 w-24 text-xs">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -648,37 +686,8 @@ export default function InternalPage({
                                 <SelectItem value="Selesai">Selesai</SelectItem>
                               </SelectContent>
                             </Select>
-                            
-                            {/* Admin Note Input for Selesai Status */}
                             {showNoteDialog[submission.id] && (
-                              <div className="w-64 p-3 bg-white border border-gray-200 rounded-lg shadow-lg absolute z-10">
-                                <Label className="text-xs font-medium text-gray-700 mb-2 block">
-                                  Catatan Pentadbir (Pilihan)
-                                </Label>
-                                <Textarea
-                                  placeholder="Masukkan catatan untuk status selesai..."
-                                  value={adminNotes[submission.id] || ''}
-                                  onChange={(e) => handleNoteChange(submission.id, e.target.value)}
-                                  className="text-xs h-20 mb-2"
-                                />
-                                <div className="flex gap-2">
-                                  <Button
-                                    size="sm"
-                                    onClick={() => handleStatusUpdate(submission.id, 'Selesai')}
-                                    className="text-xs flex-1"
-                                  >
-                                    Selesai
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => toggleNoteDialog(submission.id)}
-                                    className="text-xs"
-                                  >
-                                    Batal
-                                  </Button>
-                                </div>
-                              </div>
+                              <AdminNoteDialog submissionId={submission.id} />
                             )}
                           </div>
                         </TableCell>
@@ -694,111 +703,75 @@ export default function InternalPage({
               {/* Mobile Card View */}
               <div className="lg:hidden space-y-4 p-4">
                 {filteredSubmissions.map((submission) => (
-                  <Card key={submission.id} className="border border-gray-200">
-                    <CardContent className="p-4 space-y-3">
-                      {/* Header Row */}
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-1 flex-1 min-w-0">
+                  <Card key={submission.id} className="border border-gray-200 shadow-sm">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1 flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium text-sm text-gray-900 truncate">
+                                {submission.namaProjek || 'Tidak dinyatakan'}
+                              </h4>
+                              {submission.adminNote && submission.status === 'Selesai' && (
+                                <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs flex-shrink-0">
+                                  <MessageSquare className="h-3 w-3 mr-1" />
+                                  Maklum Balas
+                                </Badge>
+                              )}
+                              {submission.adminNote && submission.status === 'Sedang Diprocess' && (
+                                <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200 text-xs flex-shrink-0">
+                                  <MessageSquare className="h-3 w-3 mr-1" />
+                                  M. Proses
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-600 truncate">
+                              {submission.bahagian || 'Tidak dinyatakan'}
+                            </p>
+                          </div>
+                          <div className="flex items-center space-x-2 ml-2">
+                            {getStatusBadge(submission.status)}
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                          <div>
+                            <span className="font-medium">Pegawai:</span> {submission.namaPegawai || 'Tidak dinyatakan'}
+                          </div>
+                          <div>
+                            <span className="font-medium">Tarikh:</span> {formatBestAvailableDate(submission)}
+                          </div>
+                          <div className="col-span-2">
+                            <span className="font-medium">Email:</span> {submission.email || 'Tidak dinyatakan'}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-medium text-sm text-gray-900 truncate">
-                              {submission.namaProjek || 'Tidak dinyatakan'}
-                            </h4>
-                            {submission.adminNote && (
-                              <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs flex-shrink-0">
-                                <MessageSquare className="h-3 w-3 mr-1" />
-                                Catatan
-                              </Badge>
+                            <Select
+                              value={submission.status}
+                              onValueChange={(newStatus) => {
+                                if (newStatus === 'Selesai' || newStatus === 'Sedang Diprocess') {
+                                  toggleNoteDialog(submission.id, newStatus);
+                                } else {
+                                  handleStatusUpdate(submission.id, newStatus);
+                                }
+                              }}
+                            >
+                              <SelectTrigger className="h-8 w-28 text-xs">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Menunggu">Menunggu</SelectItem>
+                                <SelectItem value="Sedang Diprocess">Sedang Diproses</SelectItem>
+                                <SelectItem value="Selesai">Selesai</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {showNoteDialog[submission.id] && (
+                              <AdminNoteDialog submissionId={submission.id} />
                             )}
                           </div>
-                          <p className="text-xs text-gray-600 truncate">
-                            {submission.bahagian || 'Tidak dinyatakan'}
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-2 ml-2">
-                          {getStatusBadge(submission.status)}
                           <SubmissionDetailModal submission={submission} />
-                        </div>
-                      </div>
-
-                      {/* Details Grid */}
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div>
-                          <span className="text-gray-500">Pegawai:</span>
-                          <p className="text-gray-900 truncate">{submission.namaPegawai || 'Tidak dinyatakan'}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Tarikh:</span>
-                          <p className="text-gray-900">{formatBestAvailableDate(submission)}</p>
-                        </div>
-                        <div className="col-span-2">
-                          <span className="text-gray-500">Email:</span>
-                          <p className="text-gray-900 truncate">{submission.email || 'Tidak dinyatakan'}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Kutipan Data:</span>
-                          <p className="text-gray-900 capitalize text-xs">{getFieldValue(submission, 'kekerapanPengumpulan')}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-500">Kemaskini:</span>
-                          <p className="text-gray-900 text-xs">{formatDateSafe(submission.updatedAt || submission.createdAt)}</p>
-                        </div>
-                      </div>
-
-                      {/* Action Section */}
-                      <div className="border-t pt-3 mt-3">
-                        <div className="space-y-2">
-                          <Select
-                            value={submission.status}
-                            onValueChange={(newStatus) => {
-                              if (newStatus === 'Selesai') {
-                                toggleNoteDialog(submission.id);
-                              } else {
-                                handleStatusUpdate(submission.id, newStatus);
-                              }
-                            }}
-                            disabled={loading}
-                          >
-                            <SelectTrigger className="w-full h-8 text-xs">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Menunggu">Menunggu</SelectItem>
-                              <SelectItem value="Sedang Diprocess">Sedang Diproses</SelectItem>
-                              <SelectItem value="Selesai">Selesai</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          
-                          {/* Admin Note Input for Mobile */}
-                          {showNoteDialog[submission.id] && (
-                            <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                              <Label className="text-xs font-medium text-gray-700 mb-2 block">
-                                Catatan Pentadbir (Pilihan)
-                              </Label>
-                              <Textarea
-                                placeholder="Masukkan catatan untuk status selesai..."
-                                value={adminNotes[submission.id] || ''}
-                                onChange={(e) => handleNoteChange(submission.id, e.target.value)}
-                                className="text-xs h-20 mb-2"
-                              />
-                              <div className="flex gap-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleStatusUpdate(submission.id, 'Selesai')}
-                                  className="text-xs flex-1"
-                                >
-                                  Selesai
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => toggleNoteDialog(submission.id)}
-                                  className="text-xs"
-                                >
-                                  Batal
-                                </Button>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -809,9 +782,11 @@ export default function InternalPage({
           )}
         </CardContent>
       </Card>
-      
-      {/* Admin Note Dialog */}
-      {noteDialogId && <AdminNoteDialog submissionId={noteDialogId} />}
+
+      {/* Email Test Button - Development Helper */}
+      {/* <div className="flex justify-center">
+        <EmailTestButton />
+      </div> */}
     </div>
   );
 }

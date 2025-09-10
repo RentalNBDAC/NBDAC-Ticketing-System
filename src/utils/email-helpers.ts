@@ -269,7 +269,7 @@ export const generateProfessionalEmailHTML = (submission: any, submissionId: str
     <tr>
       <td bgcolor="#374151" style="background-color:#374151;color:#ffffff;padding:20px;text-align:center;">
         <p style="margin:0 0 8px 0;font-size:16px;font-weight:600;color:#ffffff;font-family:Arial,sans-serif;">
-          Sistem Permohonan Projek NBDAC
+          Sistem Permohonan Projek Web Scraping NBDAC
         </p>
         <p style="margin:0;font-size:12px;color:#ffffff;font-family:Arial,sans-serif;">
           Automated message via EmailJS
@@ -325,7 +325,7 @@ MAKLUMAT SISTEM:
 ID Permohonan: ${submissionId}
 Masa Permohonan: ${new Date().toLocaleString('ms-MY')}
 
-Sistem Permohonan Projek NBDAC
+Sistem Permohonan Projek Web Scraping NBDAC
 Automated message via EmailJS
   `.trim();
 };

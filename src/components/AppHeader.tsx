@@ -41,15 +41,15 @@ export default function AppHeader({
       case 'semak-status':
         return 'Semak Status';
       default:
-        return 'Sistem Permohonan Projek NBDAC';
+        return 'Sistem Permohonan Projek Web Scraping NBDAC';
     }
   };
 
   // Mobile-friendly system title
   const getSystemTitle = () => {
     return {
-      full: 'Sistem Permohonan Projek NBDAC',
-      short: 'SPPN'  // Sistem Permohonan Projek NBDAC abbreviated
+      full: 'Sistem Permohonan Projek Web Scraping NBDAC',
+      short: 'SPPN'  // Sistem Permohonan Projek Web Scraping NBDAC abbreviated
     };
   };
 

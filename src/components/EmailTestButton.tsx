@@ -25,7 +25,7 @@ export default function EmailTestButton({
       // Create a test submission with realistic data
       const testSubmission = {
         id: `test-email-${Date.now()}`,
-        namaProjek: 'Test Email - Sistem Permohonan Projek NBDAC',
+        namaProjek: 'Test Email - Sistem Permohonan Projek Web Scraping NBDAC',
         bahagian: 'Bahagian Teknologi Maklumat',
         namaPegawai: 'Pentadbir Sistem',
         email: 'admin@nbdac.gov.my',

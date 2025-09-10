@@ -1,6 +1,6 @@
 # Panduan Pengeluaran (Production Setup)
 
-Panduan lengkap untuk menyediakan sistem **Sistem Permohonan Projek NBDAC** untuk penggunaan pengeluaran.
+Panduan lengkap untuk menyediakan sistem **Sistem Permohonan Projek Web Scraping NBDAC** untuk penggunaan pengeluaran.
 
 ## 📋 Senarai Semak Pengeluaran
 

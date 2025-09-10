@@ -58,4 +58,7 @@
       port: 3000,
       open: true,
     },
+     esbuild: {
+    drop: ["console", "debugger"], // 🚀 removes all console.* + debugger
+    },
   });

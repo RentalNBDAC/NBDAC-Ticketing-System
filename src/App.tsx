@@ -71,7 +71,7 @@ export default function App() {
   // Auto-load submissions when authenticated (fixes refresh issue)
   useEffect(() => {
     if (!authLoading && isAuthenticated && currentPage === APP_CONSTANTS.PAGES.INTERNAL) {
-      console.log('🔄 Auto-loading submissions after authentication...');
+      // console.log('🔄 Auto-loading submissions after authentication...');
       loadSubmissions();
     }
   }, [authLoading, isAuthenticated, currentPage, loadSubmissions]);
@@ -92,7 +92,7 @@ export default function App() {
     const handleNavigateToPage = (event: CustomEvent) => {
       const { page } = event.detail;
       if (page && typeof page === 'string') {
-        console.log(`📱 Custom navigation to: ${page}`);
+        // console.log(`📱 Custom navigation to: ${page}`);
         navigateToPage(page);
       }
     };
