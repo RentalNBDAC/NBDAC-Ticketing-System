@@ -49,7 +49,7 @@ export default function AppHeader({
   const getSystemTitle = () => {
     return {
       full: 'Sistem Permohonan Projek Web Scraping NBDAC',
-      short: 'SPPN'  // Sistem Permohonan Projek Web Scraping NBDAC abbreviated
+      short: 'PPWS'  // Sistem Permohonan Projek Web Scraping NBDAC abbreviated
     };
   };
 
