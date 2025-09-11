@@ -367,7 +367,7 @@ export default function InternalPage({
         <div className="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[80vh] overflow-hidden border">
           <div className="p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Maklum Balas Pentadbir (Opsional)
+              Maklum Balas Pentadbir (Pilihan)
             </h3>
             <div className="mb-4">
               <input 
