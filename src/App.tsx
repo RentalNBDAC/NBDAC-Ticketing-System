@@ -32,6 +32,41 @@ export default function App() {
   // Initialize app - environment, health checks, window functions, and console instructions
   useEffect(() => {
     initializeApp();
+    
+    // Set favicon for browser tab
+    const setFavicon = () => {
+      // Remove existing favicon if any
+      const existingFavicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
+      if (existingFavicon) {
+        existingFavicon.remove();
+      }
+      
+      // Create new favicon link
+      const favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      favicon.type = 'image/svg+xml';
+      // Simple document/project icon in blue theme
+      favicon.href = `data:image/svg+xml,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+          <rect width="24" height="24" rx="4" fill="#2563eb"/>
+          <rect x="4" y="4" width="16" height="16" rx="2" fill="white"/>
+          <rect x="6" y="7" width="8" height="1.5" fill="#2563eb"/>
+          <rect x="6" y="10" width="6" height="1.5" fill="#2563eb"/>
+          <rect x="6" y="13" width="10" height="1.5" fill="#2563eb"/>
+          <rect x="6" y="16" width="7" height="1.5" fill="#2563eb"/>
+        </svg>
+      `)}`;
+      
+      // Add to document head
+      document.head.appendChild(favicon);
+      
+      // Also set document title if not already set
+      if (document.title === '' || document.title === 'React App') {
+        document.title = 'Sistem Permohonan Projek NBDAC';
+      }
+    };
+    
+    setFavicon();
   }, []);
 
   // Initialize currentPage from localStorage
@@ -71,7 +106,7 @@ export default function App() {
   // Auto-load submissions when authenticated (fixes refresh issue)
   useEffect(() => {
     if (!authLoading && isAuthenticated && currentPage === APP_CONSTANTS.PAGES.INTERNAL) {
-      // console.log('🔄 Auto-loading submissions after authentication...');
+      console.log('🔄 Auto-loading submissions after authentication...');
       loadSubmissions();
     }
   }, [authLoading, isAuthenticated, currentPage, loadSubmissions]);
@@ -92,7 +127,7 @@ export default function App() {
     const handleNavigateToPage = (event: CustomEvent) => {
       const { page } = event.detail;
       if (page && typeof page === 'string') {
-        // console.log(`📱 Custom navigation to: ${page}`);
+        console.log(`📱 Custom navigation to: ${page}`);
         navigateToPage(page);
       }
     };
